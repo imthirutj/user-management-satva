@@ -7,6 +7,12 @@
   visible
 >
 
+<c-sidebar-header class="border-bottom">
+  <c-sidebar-brand [routerLink]="[]">
+    <img src="https://satvatrust.com/wp-content/uploads/elementor/thumbs/qweqwe-qdf4ma48n2cu267vky1urkcurp1dovywyb9r1xj75s.png" title="qweqwe" alt="qweqwe" loading="lazy">
+  </c-sidebar-brand>
+</c-sidebar-header>
+
   <ng-scrollbar #scrollbar="ngScrollbar" (updated)="onScrollbarUpdate(scrollbar.state)" class="overflow" pointerEventsMethod="scrollbar" visibility="hover">
     <c-sidebar-nav #overflow [navItems]="navItems" dropdownMode="close" compact />
   </ng-scrollbar>
