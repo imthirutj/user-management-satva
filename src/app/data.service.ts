@@ -74,7 +74,7 @@ export class DataService {
   isLoggedIn(): Observable<boolean> {
     this.loadingService.setLoadingState(true); 
     const headers = this.getHeaders();
-    return this.http.get<any>(`${this.apiUrl}validate-token`, { headers })
+    return this.http.get<any>(`https://run.mocky.io/v3/63044292-ad8b-4e28-bcf6-c61dd930e7dc`, { headers })
     .pipe(
       tap(() => this.loadingService.setLoadingState(false)), // Set loading state to false after API call completes
       catchError(error => {

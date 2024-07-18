@@ -12,14 +12,17 @@ export const routes: Routes = [
   {
     path: 'home',
     component: DefaultLayoutComponent,
+    canActivate:[AuthGuard],
     data: {
       title: 'Home'
     },
     children: [
       {
         path: 'dashboard',
-        loadChildren: () => import('./views/dashboard/routes').then((m) => m.routes),
-        canActivate:[AuthGuard]
+        loadComponent: () => import('./views/dashboard/dashboard.component').then(m => m.DashboardComponent),
+          data: {
+            title: $localize`Dashboard`
+          }
       },
       
     ]

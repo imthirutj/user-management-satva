@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NgScrollbar } from 'ngx-scrollbar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { IconDirective } from '@coreui/icons-angular';
+import { CommonModule } from '@angular/common'; 
 import {
   ContainerComponent,
   ShadowOnScrollDirective,
@@ -12,11 +14,13 @@ import {
   SidebarHeaderComponent,
   SidebarNavComponent,
   SidebarToggleDirective,
-  SidebarTogglerDirective
+  SidebarTogglerDirective, SpinnerModule
 } from '@coreui/angular';
 
 import { DefaultHeaderComponent } from './';
 import { navItems } from './_nav';
+import { LoadingService } from '../../loading.service';
+import { Router } from '@angular/router';
 
 function isOverflown(element: HTMLElement) {
   return (
@@ -44,11 +48,21 @@ function isOverflown(element: HTMLElement) {
     DefaultHeaderComponent,
     ShadowOnScrollDirective,
     ContainerComponent,
-    RouterOutlet
+    RouterOutlet,
+    SpinnerModule,
+    CommonModule
   ]
 })
 export class DefaultLayoutComponent {
   public navItems = navItems;
+
+  public  name:string = "a";
+  public isLoading: boolean; // Example property for loading state
+
+  constructor(private router: Router, public loadingService: LoadingService) {
+    // Initialize properties or subscribe to observables here
+    this.isLoading = false; // Example initialization
+  }
 
   onScrollbarUpdate($event: any) {
     // if ($event.verticalUsed) {
