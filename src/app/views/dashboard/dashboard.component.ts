@@ -1,6 +1,6 @@
 import { DOCUMENT, NgStyle } from '@angular/common';
-import { Component, DestroyRef, effect, inject, OnInit, Renderer2, signal, WritableSignal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, DestroyRef, effect, inject, OnInit, Renderer2, signal, ViewChild, WritableSignal } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { CommonModule } from '@angular/common'; 
 import {
@@ -19,6 +19,7 @@ import {
   RowComponent,
   TableDirective,
   TextColorDirective,
+  ModalModule 
 } from '@coreui/angular';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { IconDirective } from '@coreui/icons-angular';
@@ -42,9 +43,24 @@ interface IUser {
   templateUrl: 'dashboard.component.html',
   styleUrls: ['dashboard.component.scss'],
   standalone: true,
-  imports: [WidgetsDropdownComponent, TextColorDirective, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressBarDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent]
+  imports: [ModalModule,WidgetsDropdownComponent, TextColorDirective, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressBarDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent]
 })
 export class DashboardComponent implements OnInit {
+  public userForm: FormGroup;
+  selectedUser: any;
+  public formVisible:Boolean = false;
+  constructor(private fb: FormBuilder) {
+    this.userForm = this.fb.group({
+      username: [''],
+      password: [''],
+      products: [''],
+      companyType: [''],
+      company: [''],
+      emailAddress: [''],
+      position: [''],
+      userType: ['']
+    });
+  }
 
   public users: IUser[] = [
     {
@@ -72,6 +88,21 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
   }
   
+  openModal(user: any) {
+    this.formVisible= true;
+  }
+
+  closeModal() {
+    this.formVisible= false;
+  }
+
+  onSubmit() {
+    if (this.userForm.valid) {
+      // Handle form submission
+      console.log(this.userForm.value);
+      this.closeModal();
+    }
+  }
 
   
 }

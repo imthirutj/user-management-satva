@@ -1,4 +1,5 @@
 
+<button cButton color="primary" (click)="openModal(null)">Add New User</button>
 
 <c-row>
   <c-col xs>
@@ -67,3 +68,51 @@
     </c-card>
   </c-col>
 </c-row>
+
+
+<c-modal [visible]="formVisible"  [backdrop]="true" [keyboard]="false">
+  <c-modal-header>
+    <h5 class="modal-title">Edit User</h5>
+    <button type="button" class="btn-close" (click)="closeModal()"></button>
+  </c-modal-header>
+  <c-modal-body>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="username">Username</label>
+        <input id="username" formControlName="username" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="password">Password</label>
+        <input id="password" formControlName="password" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="products">Products</label>
+        <input id="products" formControlName="products" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="companyType">Company Type</label>
+        <input id="companyType" formControlName="companyType" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="company">Company</label>
+        <input id="company" formControlName="company" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="emailAddress">Email Address</label>
+        <input id="emailAddress" formControlName="emailAddress" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="position">Position</label>
+        <input id="position" formControlName="position" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label for="userType">User Type</label>
+        <input id="userType" formControlName="userType" class="form-control" />
+      </div>
+      <div class="d-flex justify-content-between">
+        <button cButton color="primary" type="submit">Submit</button>
+        <button cButton color="secondary" type="button" (click)="closeModal()">Close</button>
+      </div>
+    </form>
+  </c-modal-body>
+</c-modal>
