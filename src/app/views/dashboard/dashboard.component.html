@@ -1,118 +1,103 @@
+<div class="container">
+  <button class="btn btn-primary mb-3" (click)="openModal()">+ Create User</button>
+  <table class="table table-hover table-responsive table-striped border">
+    <thead class="text-nowrap text-truncate">
+      <tr>
+        <th class="bg-body-tertiary text-center"><i class="bi bi-people"></i></th>
+        <th class="bg-body-tertiary">User</th>
+        <th class="bg-body-tertiary text-center">Products</th>
+        <th class="bg-body-tertiary">Company Type</th>
+        <th class="bg-body-tertiary text-center">Company</th>
+        <th class="bg-body-tertiary text-center">Email</th>
+        <th class="bg-body-tertiary text-center">Position</th>
+        <th class="bg-body-tertiary text-center">UserType</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users;">
+        <td class="text-center">
+          <img src="../../../assets/images/avatars/9.jpg" class="rounded-circle" alt="Avatar" width="40">
+        </td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.products }}</td>
+        <td>{{ user.companyType }}</td>
+        <td>{{ user.company }}</td>
+        <td>{{ user.emailAddress }}</td>
+        <td>{{ user.position }}</td>
+        <td>{{ user.userType }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-<button cButton color="primary" (click)="openModal(null)">Add New User</button>
-
-<c-row>
-  <c-col xs>
-    <c-card class="mb-4">
-      <c-card-body>
-        <table
-          [hover]="true"
-          [responsive]="true"
-          [striped]="true"
-          align="middle"
-          cTable
-          class="mb-0 border"
-        >
-          <thead class="text-nowrap text-truncate">
-          <tr>
-            <th class="bg-body-tertiary text-center ">
-              <svg cIcon name="cilPeople"></svg>
-            </th>
-            <th class="bg-body-tertiary">User</th>
-            <th class="bg-body-tertiary text-center">Products</th>
-            <th class="bg-body-tertiary">Company Type</th>
-            <th class="bg-body-tertiary text-center">Company</th>
-            <th class="bg-body-tertiary text-center">Email</th>
-            <th class="bg-body-tertiary text-center">Position</th>
-            <th class="bg-body-tertiary text-center">UserType</th>
-          </tr>
-          </thead>
-          <tbody>
-            @for (user of users; track user.username; let i = $index) {
-              <tr>
-                <td class="text-center">
-                  <c-avatar [size]="'md'" src="../../../assets/images/avatars/9.jpg"  />
-                </td>
-
-                <td>
-                  <div>{{ user.username }}</div>
-                  
-                </td>
-
-                <td>
-                  <div>{{ user.products }}</div>
-                </td>
-
-                <td>
-                  <div>{{ user.companyType }}</div>
-                </td>
-                <td>
-                  <div>{{ user.company }}</div>
-                </td>
-                <td>
-                  <div>{{ user.emailAddress }}</div>
-                </td>
-                <td>
-                  <div>{{ user.position }}</div>
-                </td>
-                <td>
-                  <div>{{ user.userType }}</div>
-                </td>
-
-                
-              </tr>
-            }
-          </tbody>
-        </table>
-      </c-card-body>
-    </c-card>
-  </c-col>
-</c-row>
-
-
-<c-modal [visible]="formVisible"  [backdrop]="true" [keyboard]="false">
-  <c-modal-header>
-    <h5 class="modal-title">Edit User</h5>
-    <button type="button" class="btn-close" (click)="closeModal()"></button>
-  </c-modal-header>
-  <c-modal-body>
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-      <div class="mb-3">
-        <label for="username">Username</label>
-        <input id="username" formControlName="username" class="form-control" />
+<!-- Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userModalLabel">Create User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="mb-3">
-        <label for="password">Password</label>
-        <input id="password" formControlName="password" class="form-control" />
+      <div class="modal-body">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="login-details-tab" data-bs-toggle="tab" data-bs-target="#login-details" type="button" role="tab" aria-controls="login-details" aria-selected="true">
+              <i class="bi bi-person"></i> Login Details
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="company-details-tab" data-bs-toggle="tab" data-bs-target="#company-details" type="button" role="tab" aria-controls="company-details" aria-selected="false">
+              <i class="bi bi-building"></i> Company Details
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="login-details" role="tabpanel" aria-labelledby="login-details-tab">
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+              <div class="mb-3">
+                <label for="username">Username</label>
+                <input id="username" formControlName="username" class="form-control" placeholder="Enter the username" />
+              </div>
+              <div class="mb-3">
+                <label for="password">Password</label>
+                <input id="password" type="password" formControlName="password" class="form-control" placeholder="Enter the password" />
+              </div>
+            </form>
+          </div>
+          <div class="tab-pane fade" id="company-details" role="tabpanel" aria-labelledby="company-details-tab">
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+              <div class="mb-3">
+                <label for="products">Products</label>
+                <input id="products" formControlName="products" class="form-control" placeholder="Enter the products" />
+              </div>
+              <div class="mb-3">
+                <label for="companyType">Company Type</label>
+                <input id="companyType" formControlName="companyType" class="form-control" placeholder="Enter the company type" />
+              </div>
+              <div class="mb-3">
+                <label for="company">Company</label>
+                <input id="company" formControlName="company" class="form-control" placeholder="Enter the company" />
+              </div>
+              <div class="mb-3">
+                <label for="emailAddress">Email Address</label>
+                <input id="emailAddress" formControlName="emailAddress" class="form-control" placeholder="Enter the email address" />
+              </div>
+              <div class="mb-3">
+                <label for="position">Position</label>
+                <input id="position" formControlName="position" class="form-control" placeholder="Enter the position" />
+              </div>
+              <div class="mb-3">
+                <label for="userType">User Type</label>
+                <input id="userType" formControlName="userType" class="form-control" placeholder="Enter the user type" />
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="products">Products</label>
-        <input id="products" formControlName="products" class="form-control" />
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Next</button>
       </div>
-      <div class="mb-3">
-        <label for="companyType">Company Type</label>
-        <input id="companyType" formControlName="companyType" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label for="company">Company</label>
-        <input id="company" formControlName="company" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label for="emailAddress">Email Address</label>
-        <input id="emailAddress" formControlName="emailAddress" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label for="position">Position</label>
-        <input id="position" formControlName="position" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label for="userType">User Type</label>
-        <input id="userType" formControlName="userType" class="form-control" />
-      </div>
-      <div class="d-flex justify-content-between">
-        <button cButton color="primary" type="submit">Submit</button>
-        <button cButton color="secondary" type="button" (click)="closeModal()">Close</button>
-      </div>
-    </form>
-  </c-modal-body>
-</c-modal>
+    </div>
+  </div>
+</div>

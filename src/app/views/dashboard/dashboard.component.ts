@@ -1,7 +1,7 @@
 import { DOCUMENT, NgStyle } from '@angular/common';
 import { Component, DestroyRef, effect, inject, OnInit, Renderer2, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-
+import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common'; 
 import {
   AvatarComponent,
@@ -19,7 +19,7 @@ import {
   RowComponent,
   TableDirective,
   TextColorDirective,
-  ModalModule 
+  ModalModule , NavComponent
 } from '@coreui/angular';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { IconDirective } from '@coreui/icons-angular';
@@ -43,12 +43,13 @@ interface IUser {
   templateUrl: 'dashboard.component.html',
   styleUrls: ['dashboard.component.scss'],
   standalone: true,
-  imports: [ModalModule,WidgetsDropdownComponent, TextColorDirective, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressBarDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent]
+  imports: [CommonModule,NavComponent,ModalModule,WidgetsDropdownComponent, TextColorDirective, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressBarDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent]
 })
 export class DashboardComponent implements OnInit {
   public userForm: FormGroup;
   selectedUser: any;
   public formVisible:Boolean = false;
+  activeTab = 'loginDetails';
   constructor(private fb: FormBuilder) {
     this.userForm = this.fb.group({
       username: [''],
@@ -87,13 +88,26 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  
-  openModal(user: any) {
-    this.formVisible= true;
+  openModal() {
+    const modalElement = document.getElementById('userModal') as HTMLElement;
+  const modal = new bootstrap.Modal(modalElement);
+  modal.show();
   }
 
   closeModal() {
-    this.formVisible= false;
+    const modalElement = document.getElementById('userModal') as HTMLElement;
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    if (modal) {
+      modal.hide();
+    }
+  }
+
+  setTab(tab: string) {
+    this.activeTab = tab;
+  }
+
+  trackByUsername(index: number, user: any) {
+    return user.username;
   }
 
   onSubmit() {
