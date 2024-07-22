@@ -25,6 +25,13 @@ export const routes: Routes = [
           }
       },
       
+      {
+        path: 'organization',
+        loadComponent: () => import('./views/organization/organization.component').then(m => m.OrganizationComponent),
+          data: {
+            title: $localize`Organization`
+          }
+      },
     ]
   },
   {

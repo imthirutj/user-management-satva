@@ -49,7 +49,7 @@ export class DataService {
   login(userName: string, password: string): Observable<any> {
     const loginData = { userName, password };
   
-    return this.http.post<any>(`${this.apiUrl}login`, loginData).pipe(
+    return this.http.post<any>(`${this.apiUrl}auth/authenticate`, loginData).pipe(
       map((response: any) => {
         
         this.user = response.user || null;
@@ -74,7 +74,7 @@ export class DataService {
   isLoggedIn(): Observable<boolean> {
     this.loadingService.setLoadingState(true); 
     const headers = this.getHeaders();
-    return this.http.get<any>(`https://run.mocky.io/v3/63044292-ad8b-4e28-bcf6-c61dd930e7dc`, { headers })
+    return this.http.get<any>(`${this.apiUrl}auth/validate-token`, { headers })
     .pipe(
       tap(() => this.loadingService.setLoadingState(false)), // Set loading state to false after API call completes
       catchError(error => {

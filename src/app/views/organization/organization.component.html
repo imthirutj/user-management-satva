@@ -1,0 +1,26 @@
+<div class="container">
+  <button class="btn btn-primary mb-3" (click)="openModal()">+ Create Company</button>
+  <table class="table table-hover table-responsive table-striped border">
+    <thead class="text-nowrap text-truncate">
+      <tr>
+        <th class="bg-body-tertiary">id</th>
+        <th class="bg-body-tertiary text-center">Name</th>
+        <th class="bg-body-tertiary">Company Type</th>
+        <th class="bg-body-tertiary text-center">Reg No</th>
+        <th class="bg-body-tertiary text-center">Address</th>
+        <th class="bg-body-tertiary text-center">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let company of companies;">
+        <td>{{ company.id }}</td>
+        <td>{{ company.name }}</td>
+        <td>{{ company.companyType }}</td>
+        <td>{{ company.regNo }}</td>
+        <td>{{ company.companyAddress }}</td>
+        <td>{{ company.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
