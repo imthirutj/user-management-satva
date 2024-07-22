@@ -98,7 +98,6 @@ export class OrganizationComponent implements OnInit {
 
   public modalVisible: boolean = false;
 
-  options: string[] = ['Shoe', 'Dress', 'Trousers', 'Shirt', 'Hat'];
   selectedItems: string[] = [];
 
   onSelectionChange(selectedItems: string[]) {
