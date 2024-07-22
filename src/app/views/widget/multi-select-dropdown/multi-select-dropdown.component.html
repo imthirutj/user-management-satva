@@ -1,27 +1,26 @@
-<div class="multi-select-dropdown">
-    <input 
+<div class="multi-select-dropdown" appClickOutside (appClickOutside)="closeDropdown()">
+  <input 
     class="form-control"
-      type="text" 
-      (click)="toggleDropdown()" 
-      [value]="selectedItems.join(', ')" 
-      readonly
-      placeholder="Select items"
-    />
-    <ul *ngIf="dropdownOpen" class="dropdown-list">
-      <li *ngFor="let item of options">
-        <input 
-          type="checkbox" 
-          [checked]="isSelected(item)" 
-          (change)="toggleSelection(item)"
-        />
-        {{ item }}
-      </li>
+    type="text" 
+    (click)="toggleDropdown()" 
+    [value]="selectedItems.join(', ')" 
+    readonly
+    placeholder="Select items"
+  />
+  <ul *ngIf="dropdownOpen" class="dropdown-list">
+    <li *ngFor="let item of options" (click)="toggleSelection(item)">
+      <input 
+        type="checkbox" 
+        [checked]="isSelected(item)" 
+        (change)="toggleSelection(item, $event)"
+      />
+      {{ item }}
+    </li>
+  </ul>
+  <div *ngIf="selectedItems.length">
+    <h4>Selected Items:</h4>
+    <ul>
+      <li *ngFor="let item of selectedItems">{{ item }}</li>
     </ul>
-    <div *ngIf="selectedItems.length">
-      <h4>Selected Items:</h4>
-      <ul>
-        <li *ngFor="let item of selectedItems">{{ item }}</li>
-      </ul>
-    </div>
   </div>
-  
+</div>
