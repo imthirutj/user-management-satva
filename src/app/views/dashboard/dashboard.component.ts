@@ -2,7 +2,7 @@ import { DOCUMENT, NgStyle } from '@angular/common';
 import { Component, DestroyRef, effect, inject, OnInit, Renderer2, signal, ViewChild, WritableSignal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import {
   AvatarComponent,
   ButtonDirective,
@@ -19,13 +19,11 @@ import {
   RowComponent,
   TableDirective,
   TextColorDirective,
-  ModalModule , NavComponent
+  ModalModule, NavComponent
 } from '@coreui/angular';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { IconDirective } from '@coreui/icons-angular';
 
-import { WidgetsBrandComponent } from '../widgets/widgets-brand/widgets-brand.component';
-import { WidgetsDropdownComponent } from '../widgets/widgets-dropdown/widgets-dropdown.component';
 
 
 interface IUser {
@@ -43,12 +41,12 @@ interface IUser {
   templateUrl: 'dashboard.component.html',
   styleUrls: ['dashboard.component.scss'],
   standalone: true,
-  imports: [CommonModule,NavComponent,ModalModule,WidgetsDropdownComponent, TextColorDirective, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressBarDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent]
+  imports: [CommonModule, NavComponent, ModalModule, TextColorDirective, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressBarDirective, ProgressComponent, CardHeaderComponent, TableDirective, AvatarComponent]
 })
 export class DashboardComponent implements OnInit {
   public userForm: FormGroup;
   selectedUser: any;
-  public formVisible:Boolean = false;
+  public formVisible: Boolean = false;
   activeTab = 'loginDetails';
   constructor(private fb: FormBuilder) {
     this.userForm = this.fb.group({
@@ -90,8 +88,8 @@ export class DashboardComponent implements OnInit {
   }
   openModal() {
     const modalElement = document.getElementById('userModal') as HTMLElement;
-  const modal = new bootstrap.Modal(modalElement);
-  modal.show();
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
   }
 
   closeModal() {
@@ -118,5 +116,5 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  
+
 }

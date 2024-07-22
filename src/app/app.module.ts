@@ -8,12 +8,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 
-import { AppComponent } from './app/app.component';
-import { CompanyDialogComponent } from './app/views/pages/company-dialog/company-dialog.component';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    CompanyDialogComponent
+    
   ],
   imports: [
     BrowserModule,

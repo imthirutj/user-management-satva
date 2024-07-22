@@ -1,0 +1,27 @@
+<div class="multi-select-dropdown">
+    <input 
+    class="form-control"
+      type="text" 
+      (click)="toggleDropdown()" 
+      [value]="selectedItems.join(', ')" 
+      readonly
+      placeholder="Select items"
+    />
+    <ul *ngIf="dropdownOpen" class="dropdown-list">
+      <li *ngFor="let item of options">
+        <input 
+          type="checkbox" 
+          [checked]="isSelected(item)" 
+          (change)="toggleSelection(item)"
+        />
+        {{ item }}
+      </li>
+    </ul>
+    <div *ngIf="selectedItems.length">
+      <h4>Selected Items:</h4>
+      <ul>
+        <li *ngFor="let item of selectedItems">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+  

@@ -1,5 +1,5 @@
 import { DOCUMENT, NgStyle } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormsModule,FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common'; 
@@ -20,10 +20,9 @@ import {
   TableDirective,
   TextColorDirective,
   ModalModule,
-  NavComponent
+  NavComponent,ModalService
 } from '@coreui/angular';
-import { MatDialog } from '@angular/material/dialog';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -32,14 +31,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { IconDirective } from '@coreui/icons-angular';
 
-import { WidgetsBrandComponent } from '../widgets/widgets-brand/widgets-brand.component';
-import { WidgetsDropdownComponent } from '../widgets/widgets-dropdown/widgets-dropdown.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { CompanyDialogComponent } from '../pages/company-dialog/company-dialog.component';  // Adjust the path if necessary
 
-
+import {MultiSelectDropdownComponent } from '../widget/multi-select-dropdown/multi-select-dropdown.component';
 declare var $: any;  // Import jQuery
-
 
 export enum CompanyType {
   InsuranceBroker = 'Insurance Broker (IB)',
@@ -75,30 +70,41 @@ interface ICompany {
   imports: [CommonModule,
     NavComponent,
     ModalModule,
-    WidgetsDropdownComponent,
     TextColorDirective, CardComponent,
     CardBodyComponent, RowComponent, ColComponent,
     ButtonDirective, IconDirective, ReactiveFormsModule,FormsModule,
     ButtonGroupComponent, FormCheckLabelDirective,
     ChartjsComponent, NgStyle, CardFooterComponent,
     GutterDirective, ProgressBarDirective, ProgressComponent,
-    WidgetsBrandComponent, CardHeaderComponent, TableDirective,
+    CardHeaderComponent, TableDirective,
     AvatarComponent, NgSelectModule,
    MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatButtonModule,]
+    MatButtonModule,
+  MultiSelectDropdownComponent]
 })
 
 
 export class OrganizationComponent implements OnInit {
+
   public companyForm: FormGroup;
   public selectedCompany: ICompany | null = null;  // For editing
   public productOptions = Object.values(ProductType); // For multi-select options
   public companyTypes = Object.values(CompanyType); // For company type dropdown
+  public isModalOpen = false; // To control modal visibility
 
+  public modalVisible: boolean = false;
+
+  options: string[] = ['Shoe', 'Dress', 'Trousers', 'Shirt', 'Hat'];
+  selectedItems: string[] = [];
+
+  onSelectionChange(selectedItems: string[]) {
+    this.selectedItems = selectedItems;
+    // Perform additional actions if needed
+  }
 
   public companies: ICompany[] = [
     {
@@ -148,7 +154,9 @@ export class OrganizationComponent implements OnInit {
     }
   ];
 
-  constructor(private fb: FormBuilder, private dialog: MatDialog) {
+  private dialogRef: MatDialogRef<any> | null = null;
+
+  constructor(private fb: FormBuilder, private dialog: MatDialog, private modalService: ModalService) {
     this.companyForm = this.fb.group({
       id: [''],
       name: [''],
@@ -164,23 +172,40 @@ export class OrganizationComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
   openModal(company?: ICompany): void {
-    const dialogRef = this.dialog.open(CompanyDialogComponent, {
-      width: '500px',
-      data: { company: company || {} }
+    // Reset the form and set default values or company data
+    this.companyForm.reset({
+      id: company ? company.id : '',
+      name: company ? company.name : '',
+      companyType: company ? company.companyType : '',
+      products: company ? company.products : [],
+      regNo: company ? company.regNo : '',
+      companyAddress: company ? company.companyAddress : '',
+      status: company ? company.status : false
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (company) {
-          // Update existing company
-          Object.assign(company, result);
-        } else {
-          // Add new company
-          this.companies.push(result);
-        }
-      }
-    });
+    // Open the modal
+    // this.modalService.toggle({ show: true, id: 'company-modal' });
+    this.modalVisible= true;
+    this.selectedCompany = company || null;
   }
+
+  closeModal(): void {
+    this.modalVisible= false;
+  }
+
+  save(): void {
+    if (this.companyForm.valid) {
+      const formValue = this.companyForm.value;
+      if (this.selectedCompany) {
+        // Update existing company
+        Object.assign(this.selectedCompany, formValue);
+      } else {
+        // Add new company
+        this.companies.push(formValue);
+      }
+      this.closeModal();
+    }
+  }
+
 }
