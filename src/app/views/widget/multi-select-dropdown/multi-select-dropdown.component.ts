@@ -2,37 +2,44 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { ClickOutsideDirective } from '../click-outside.directive'; // Import the directive
 
+interface Option {
+  text: string;
+  value: string;
+}
 
 @Component({
   selector: 'app-multi-select-dropdown',
   templateUrl: './multi-select-dropdown.component.html',
   styleUrls: ['./multi-select-dropdown.component.scss'],
-  standalone: true, // Mark the component as standalone,
-  imports:[CommonModule, ClickOutsideDirective]
+  standalone: true,
+  imports: [CommonModule, ClickOutsideDirective]
 })
-
-
 export class MultiSelectDropdownComponent {
-  @Input() options: string[] = [];
-  @Input() selectedItems: string[] = [];
-  @Output() selectedItemsChange = new EventEmitter<string[]>();
+  @Input() options: Option[] = [];
+  @Input() selectedItems: Option[] = [];
+  @Output() selectedItemsChange = new EventEmitter<Option[]>();
 
   dropdownOpen = false;
+
+  get selectedItemsText(): string {
+    return this.selectedItems.map(item => item.text).join(', ');
+  }
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
   }
+
   closeDropdown() {
     this.dropdownOpen = false;
   }
 
-  toggleSelection(item: string, event?: Event) {
+  toggleSelection(option: Option, event?: Event) {
     event?.stopPropagation(); // Prevent event bubbling
 
-    const index = this.selectedItems.indexOf(item);
+    const index = this.selectedItems.findIndex(item => item.value === option.value);
 
     if (index === -1) {
-      this.selectedItems.push(item);
+      this.selectedItems.push(option);
     } else {
       this.selectedItems.splice(index, 1);
     }
@@ -40,7 +47,7 @@ export class MultiSelectDropdownComponent {
     this.selectedItemsChange.emit(this.selectedItems);
   }
 
-  isSelected(item: string): boolean {
-    return this.selectedItems.includes(item);
+  isSelected(option: Option): boolean {
+    return this.selectedItems.some(item => item.value === option.value);
   }
 }

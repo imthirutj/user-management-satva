@@ -9,6 +9,7 @@
         <th class="bg-body-tertiary text-center">Reg No</th>
         <th class="bg-body-tertiary text-center">Address</th>
         <th class="bg-body-tertiary text-center">Status</th>
+        <th class="bg-body-tertiary text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,9 @@
         <td>{{ company.regNo }}</td>
         <td>{{ company.companyAddress }}</td>
         <td>{{ company.status }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="openModal(company)">Edit</button>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -69,6 +73,7 @@
         [options]="productOptions"
         [(selectedItems)]="selectedItems"
         (selectedItemsChange)="onSelectionChange($event)"
+        name="products"
         ></app-multi-select-dropdown>
         
       </div>

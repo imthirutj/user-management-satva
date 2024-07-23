@@ -1,6 +1,6 @@
 import { DOCUMENT, NgStyle } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormArray, FormsModule,FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { CommonModule } from '@angular/common'; 
 import {
@@ -20,7 +20,7 @@ import {
   TableDirective,
   TextColorDirective,
   ModalModule,
-  NavComponent,ModalService
+  NavComponent, ModalService
 } from '@coreui/angular';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,7 +33,8 @@ import { IconDirective } from '@coreui/icons-angular';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 
-import {MultiSelectDropdownComponent } from '../widget/multi-select-dropdown/multi-select-dropdown.component';
+import { MultiSelectDropdownComponent } from '../widget/multi-select-dropdown/multi-select-dropdown.component';
+
 declare var $: any;  // Import jQuery
 
 export enum CompanyType {
@@ -46,11 +47,11 @@ export enum CompanyType {
 }
 
 export enum ProductType {
-  ParametricFuelPro = 'ParametricFuelPro',
-  ParametricEUAPro = 'ParametricEUAPro',
-  EmissionsPro = 'EmissionsPro',
-  FleetPro = 'FleetPro',
-  ShipPro = 'ShipPro'
+  ParametricFuelPro = '1',
+  ParametricEUAPro = '2',
+  EmissionsPro = '3',
+  FleetPro = '4',
+  ShipPro = '5'
 }
 
 interface ICompany {
@@ -63,6 +64,11 @@ interface ICompany {
   status: boolean;
 }
 
+export interface Option {
+  text: string;
+  value: string;
+}
+
 @Component({
   templateUrl: 'organization.component.html',
   styleUrls: ['organization.component.scss'],
@@ -72,37 +78,40 @@ interface ICompany {
     ModalModule,
     TextColorDirective, CardComponent,
     CardBodyComponent, RowComponent, ColComponent,
-    ButtonDirective, IconDirective, ReactiveFormsModule,FormsModule,
+    ButtonDirective, IconDirective, ReactiveFormsModule, FormsModule,
     ButtonGroupComponent, FormCheckLabelDirective,
     ChartjsComponent, NgStyle, CardFooterComponent,
     GutterDirective, ProgressBarDirective, ProgressComponent,
     CardHeaderComponent, TableDirective,
     AvatarComponent, NgSelectModule,
-   MatDialogModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
     MatButtonModule,
-  MultiSelectDropdownComponent]
+    MultiSelectDropdownComponent]
 })
-
-
 export class OrganizationComponent implements OnInit {
 
   public companyForm: FormGroup;
   public selectedCompany: ICompany | null = null;  // For editing
-  public productOptions = Object.values(ProductType); // For multi-select options
+  public productOptions: Option[] = [
+    { text: 'Parametric Fuel Pro', value: ProductType.ParametricFuelPro },
+    { text: 'Parametric EUA Pro', value: ProductType.ParametricEUAPro },
+    { text: 'Emissions Pro', value: ProductType.EmissionsPro },
+    { text: 'Fleet Pro', value: ProductType.FleetPro },
+    { text: 'Ship Pro', value: ProductType.ShipPro }
+  ];
   public companyTypes = Object.values(CompanyType); // For company type dropdown
   public isModalOpen = false; // To control modal visibility
 
   public modalVisible: boolean = false;
 
-  selectedItems: string[] = [];
+  public selectedItems: Option[] = [];
 
-  onSelectionChange(selectedItems: string[]) {
-    this.selectedItems = selectedItems;
-    // Perform additional actions if needed
+  onSelectionChange(selectedItems: Option[]): void {
+    this.companyForm.patchValue({ products: selectedItems.map(item => item.value) });
   }
 
   public companies: ICompany[] = [
@@ -167,12 +176,14 @@ export class OrganizationComponent implements OnInit {
     });
   }
 
- 
+  ngOnInit(): void { }
 
-  ngOnInit(): void {
-  }
   openModal(company?: ICompany): void {
-    // Reset the form and set default values or company data
+    this.selectedCompany = company || null;
+
+    // Update the selectedItems if editing a company
+    this.selectedItems = company ? this.productOptions.filter(option => company.products.includes(option.value as ProductType)) : [];
+
     this.companyForm.reset({
       id: company ? company.id : '',
       name: company ? company.name : '',
@@ -183,14 +194,12 @@ export class OrganizationComponent implements OnInit {
       status: company ? company.status : false
     });
 
-    // Open the modal
-    // this.modalService.toggle({ show: true, id: 'company-modal' });
-    this.modalVisible= true;
-    this.selectedCompany = company || null;
+    this.modalVisible = true;
+    this.modalService.toggle({ show: true, id: 'company-modal' });
   }
 
   closeModal(): void {
-    this.modalVisible= false;
+    this.modalVisible = false;
   }
 
   save(): void {
@@ -199,12 +208,13 @@ export class OrganizationComponent implements OnInit {
       if (this.selectedCompany) {
         // Update existing company
         Object.assign(this.selectedCompany, formValue);
+        console.log('submit exis:', this.selectedCompany)
       } else {
         // Add new company
         this.companies.push(formValue);
+        console.log('submit:', this.companies)
       }
       this.closeModal();
     }
   }
-
 }
